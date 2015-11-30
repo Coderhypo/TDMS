@@ -55,3 +55,7 @@
 
 查询可以按多类型查询，借用人信息，设备信息，学院，操作人信息等。不过要加好权限判断。
 
+## 数据库设计
+
+![db](https://raw.githubusercontent.com/Coderhypo/TDMS/master/db.jpg)
+
