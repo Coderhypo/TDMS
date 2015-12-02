@@ -1,3 +1,5 @@
 __author__ = 'hypo'
 
-from devices import *
+from Devices import *
+from Users import *
+from Logs import *
