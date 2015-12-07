@@ -17,7 +17,7 @@ class DevelopmentConfig(Config):
         os.environ.get('DATABASE_HOST', 'localhost'),
         os.environ.get('DATABASE_DB', 'TDMS'),
     )
-    SQLALCHEMY_TRACK_MODIFICATIONS=True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class TestingConfig(Config):
@@ -28,7 +28,7 @@ class TestingConfig(Config):
         os.environ.get('DATABASE_HOST', 'localhost'),
         os.environ.get('DATABASE_DB', 'TDMS'),
     )
-    SQLALCHEMY_TRACK_MODIFICATIONS=True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
@@ -38,7 +38,7 @@ class ProductionConfig(Config):
         os.environ.get('DATABASE_HOST', 'localhost'),
         os.environ.get('DATABASE_DB', 'TDMS'),
     )
-    SQLALCHEMY_TRACK_MODIFICATIONS=True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 config = {
     'development': DevelopmentConfig,
