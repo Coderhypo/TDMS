@@ -1,8 +1,8 @@
 # coding=utf-8
-__author__ = 'hypo'
-
 from app import app
 from flask import render_template
+
+__author__ = 'hypo'
 
 
 @app.route('/')
