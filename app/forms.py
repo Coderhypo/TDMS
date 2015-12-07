@@ -1,12 +1,12 @@
 # coding=utf-8
-__author__ = 'hypo'
-
 from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms import BooleanField, ValidationError, HiddenField
 from wtforms import DateTimeField, SelectField, TextAreaField
 
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
+
+__author__ = 'hypo'
 
 
 # 登陆表单
