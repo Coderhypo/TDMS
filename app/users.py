@@ -1,15 +1,14 @@
 # coding=utf-8
 from app import db
-from app.models import Users
+from app.models import Users, Schools
 
 __author__ = 'hypo'
 
 
 class UserInfo:
-
     """
     用户信息类
-    用来创建新用户信息记录
+    用来管理用户信息记录
     getNewUser 获得新用户并持久化
     updateUser 更新用户信息
     deleteUser 删除用户
@@ -63,7 +62,6 @@ class UserInfo:
         return user
 
     def updateUser(self, id):
-
         user = Users.query.filter_by(user_id=id).first()
 
         user.user_login = self.__user_login
@@ -77,8 +75,47 @@ class UserInfo:
         db.session.commit()
 
     def deleteUser(self, id):
-
         user = Users.query.filter_by(user_id=id).first()
 
         db.session.delete(user)
+        db.session.commit()
+
+
+class SchoolInfo:
+    """
+    学院信息类
+    用来管理学院信息记录
+    getNewSchool 获得新学院记录并持久化
+    updateSchool 更新学院信息
+    deleteSchool 删除学院
+    """
+
+    __school_name = 'NONE'
+
+    def __init__(self):
+        pass
+
+    def setSchoolName(self, schoolname):
+        self.__school_name = schoolname
+
+    def getNewSchool(self):
+        school = Schools()
+
+        school.school_name = self.__school_name
+
+        db.session.add(school)
+        db.session.commit()
+
+    def updateSchool(self, id):
+        school = Schools.query.filter_by(school_id=id).first()
+
+        school.school_name = self.__school_name
+
+        db.session.add(school)
+        db.session.commit()
+
+    def deleteSchool(self, id):
+        school = Schools.query.filter_by(school_id=id).first()
+
+        db.session.delete(school)
         db.session.commit()
