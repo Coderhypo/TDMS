@@ -1,7 +1,7 @@
 # coding=utf-8
-__author__ = 'hypo'
-
 from app import db
+
+__author__ = 'hypo'
 
 
 class Devices(db.Model):

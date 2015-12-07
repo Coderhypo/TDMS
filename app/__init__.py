@@ -1,10 +1,11 @@
-__author__ = 'hypo'
-
+# coding=utf-8
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
 import os
 from config import config
+
+__author__ = 'hypo'
 
 app = Flask(__name__)
 db = SQLAlchemy()
