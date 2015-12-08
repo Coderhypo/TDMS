@@ -1,1 +1,2 @@
-__author__ = 'hypo'
+from logs import *
+from views import *
