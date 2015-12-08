@@ -21,6 +21,10 @@ class Devices(db.Model):
     def __repr__(self):
         return '<Devices %r>' % self.device_id
 
+    def to_json(self):
+        return {'id': self.device_id, 'name': self.device_name, 'type_id': self.device_type_id,
+                'status': self.device_status, 'school_id': self.school_id, 'log_id': self.lend_log_id}
+
 
 class DeviceTypes(db.Model):
     """设备表类型"""
@@ -53,6 +57,10 @@ class Users(db.Model):
     def __repr__(self):
         return '<Users %r>' % self.user_login
 
+    def to_json(self):
+        return {'id': self.user_id, 'login': self.user_login, 'name': self.user_name,
+                'phone': self.user_phone, 'school_id': self.school_id, 'log_id': self.user_rule}
+
 
 class Schools(db.Model):
     """学院表"""
@@ -66,7 +74,6 @@ class Schools(db.Model):
 
     def __repr__(self):
         return '<Schools %r>' % self.school_name
-
 
 
 class Logs(db.Model):
@@ -83,6 +90,10 @@ class Logs(db.Model):
     def __repr__(self):
         return '<Logs %r>' % self.log_id
 
+    def to_json(self):
+        return {'id': self.log_id, 'user': self.user_id, 'device': self.device_id,
+                'type': self.log_type, 'content': self.log_content, 'time': self.log_time}
+
 
 class LendLogs(db.Model):
     """借还日志表"""
@@ -97,3 +108,7 @@ class LendLogs(db.Model):
 
     def __repr__(self):
         return '<LendLogs %r>' % self.log_id
+
+    def to_json(self):
+        return {'id': self.log_id, 'device': self.device_id, 'lender': self.lender_id,
+                'doer': self.doer_id, 'lend_time': self.lend_time, 'return_time': self.return_time}
