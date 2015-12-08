@@ -1,6 +1,6 @@
 # coding=utf-8
 from app import db
-from app.logs import LendLog
+from app.logs.logs import LendLog
 from app.models import Devices
 
 __author__ = 'hypo'
