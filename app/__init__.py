@@ -22,3 +22,4 @@ from .views import *
 from .devices import *
 from .users import *
 from .logs import *
+from .api import *
