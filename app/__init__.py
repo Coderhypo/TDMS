@@ -1,8 +1,9 @@
 # coding=utf-8
+import os
+
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
-import os
 from config import config
 
 __author__ = 'hypo'
@@ -17,4 +18,7 @@ with app.app_context():
 
     db.init_app(app)
 
-from views import *
+from .views import *
+from .devices import *
+from .users import *
+from .logs import *
