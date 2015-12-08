@@ -45,6 +45,7 @@ class LendLog:
 
     def returnDevice(self, logid):
         log = LendLogs.query.filter_by(log_id=logid).first()
+        log.doer_id = self.__doer_id
         log.return_time = datetime.datetime.now()
 
         db.session.add(log)

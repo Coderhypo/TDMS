@@ -1,5 +1,6 @@
 # coding=utf-8
 from app import db
+from app.logs import LendLog
 from app.models import Devices
 
 __author__ = 'hypo'
@@ -83,7 +84,19 @@ class Device:
         self.__device = Devices.query.filter_by(device_id=id).first()
 
     def lendDevice(self, lender, doer):
-        pass
+        lendlog = LendLog()
+        lendlog.setDevice(self.__device.device_id)
+        lendlog.setLender(lender)
+        lendlog.setDoer(doer)
+        lendlog.lendDevice()
 
     def returnDevice(self, lender, doer):
-        pass
+        lendlog = LendLog()
+        lendlog.setDevice(self.__device.device_id)
+        lendlog.setLender(lender)
+        lendlog.setDoer(doer)
+        lendlog.returnDevice(self.__device.lend_log_id)
+
+        self.__device.lend_log_id = None
+        db.session.add(self.__device)
+        db.session.commit()
