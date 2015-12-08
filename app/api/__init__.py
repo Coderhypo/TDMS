@@ -1,1 +1,2 @@
-__author__ = 'hypo'
+from device import *
+from user import *
