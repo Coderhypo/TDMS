@@ -22,7 +22,7 @@ class DeviceInfo:
     __device_name = 'NONE'
     __device_type_id = 1
     __device_status = 0
-    __school_id = -1
+    __school_id = 1
     __lend_log_id = -1
 
     def setName(self, name):
