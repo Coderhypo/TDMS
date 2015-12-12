@@ -27,10 +27,9 @@ def devicestatus(status):
 
     if request.method == 'GET':
 
-        if status != 0:
-            devices = Devices.query.filter_by(device_status=status).all()
-            for device in devices:
-                tmp = device.to_json()
-                rnt.append(tmp)
+        devices = Devices.query.filter_by(device_status=status).all()
+        for device in devices:
+            tmp = device.to_json()
+            rnt.append(tmp)
 
     return json.dumps(rnt)
