@@ -4,12 +4,12 @@ from app.models import Devices
 from flask import render_template, request, redirect, url_for
 
 from .devices import DeviceInfo
+
 __author__ = 'hypo'
 
 
 @app.route('/admin/lend')
 def lend():
-
     """设备借出页面"""
 
     return render_template('/admin/devices/lenddevice.html')
@@ -17,7 +17,6 @@ def lend():
 
 @app.route('/admin/return')
 def reDevices():
-
     """归还设备页面"""
 
     return render_template('/admin/devices/returndevice.html')
@@ -75,3 +74,22 @@ def addDevice():
 
     return redirect(url_for('devices'))
 
+
+@app.route('/admin/updatedevice', methods=['GET', 'POST'])
+def updateDevice():
+
+    """更新设备页面"""
+
+    if request.method == 'POST':
+        if 'update' == request.form['type']:
+            id = request.form['editid']
+            device = DeviceInfo()
+            device.setName(request.form['editname'])
+            device.setStatus(request.form['status'])
+            device.updateDevice(id)
+        elif 'delete' == request.form['type']:
+            id = request.form['delid']
+            device = DeviceInfo()
+            device.deleteDevice(id)
+
+    return redirect(url_for('devices'))
