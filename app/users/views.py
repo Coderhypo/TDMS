@@ -20,12 +20,60 @@ def users():
         tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
 
         schoolid = user.school_id
-        school = Schools.query.filter(school_id=schoolid).first()
+        school = Schools.query.filter_by(school_id=schoolid).first()
         tmp['school'] = school.school_name
 
         list.append(tmp)
 
-    return render_template('/admin/users/usermanage.html')
+    return render_template('/admin/users/usermanage.html', list=list)
+
+
+@app.route('/admin/adduser', methods=['GET', 'POST'])
+def addUser():
+    if request.method == 'POST':
+        user = UserInfo()
+        user.setLoginName(request.form['login'])
+        user.setUsername(request.form['name'])
+        user.setPhone(request.form['phone'])
+        user.setSchool(request.form['school'])
+
+        user.getNewUser()
+
+        return redirect(url_for('users'))
+
+    list = []
+    schools = Schools.query.all()
+
+    for school in schools:
+        tmp = {'id': school.school_id, 'name': school.school_name}
+
+        list.append(tmp)
+
+    return render_template('/admin/users/adduser.html', schools=list)
+
+
+@app.route('/admin/updateuser', methods=['GET', 'POST'])
+def updateuser():
+    """更新用户信息 管理员权限"""
+
+    if request.method == 'POST':
+        if 'update' == request.form['type']:
+            id = request.form['editid']
+            user = UserInfo()
+            user.setLoginName(request.form['login'])
+            user.setUsername(request.form['name'])
+            user.setPhone(request.form['phone'])
+            user.setSchool(request.form['school'])
+            user.setRule(request.form['rule'])
+
+            user.updateUser(id)
+        elif 'delete' == request.form['type']:
+            id = request.form['delid']
+            user = UserInfo()
+
+            user.deleteUser(id)
+
+    return redirect(url_for('users'))
 
 
 @app.route('/admin/schools')
@@ -47,7 +95,6 @@ def schools():
 
 @app.route('/admin/addschool', methods=['GET', 'POST'])
 def addSchool():
-
     """添加学院 管理员权限"""
 
     if request.method == 'POST':
