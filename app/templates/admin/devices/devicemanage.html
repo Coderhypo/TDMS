@@ -86,8 +86,9 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="editdeviceLabel">更新设备信息</h4>
                 </div>
-                <form method="POST" action="#">
+                <form action="/admin/updatedevice" method="POST">
                     <input type="hidden" id="editid" name="editid">
+                    <input type="hidden" id="type" name="type" value="update">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="editname">设备名称</label>
@@ -104,7 +105,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="submit" class="btn btn-info" data-dismiss="modal">保存</button>
+                        <button type="submit" class="btn btn-info">保存</button>
                     </div>
                 </form>
             </div>
@@ -118,13 +119,15 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="deldeviceLabel">删除设备</h4>
                 </div>
-                <form method="POST" action="#">
+                <form action="/admin/updatedevice" method="POST">
+                    <input type="hidden" id="delid" name="delid">
+                    <input type="hidden" id="type" name="type" value="delete">
                     <div class="modal-body">
                         您将删除设备 <label id="createDelName"></label>，确认？
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="submit" class="btn btn-danger" data-dismiss="modal">删除</button>
+                        <button type="submit" class="btn btn-danger">删除</button>
                     </div>
                 </form>
             </div>
@@ -171,7 +174,7 @@
         var id = button.data('id')
         var name = button.data('name')
         var modal = $(this)
-        modal.find('#delId').val(id)
+        modal.find('#delid').val(id)
         document.getElementById("createDelName").innerHTML = name;
     });
     $('#editdevice').on('show.bs.modal', function (event) {
