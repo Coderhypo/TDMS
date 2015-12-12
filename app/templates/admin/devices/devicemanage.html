@@ -10,8 +10,177 @@
 </div><!--/.row-->
 
 <div class="row">
-    <div class="col-lg-12">
-
+    <div class="col-lg-7">
+        <div class="row">
+          <div class="col-md-12">
+              <h3>设备管理</h3>
+          </div>
+        </div>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+                <th>设备ID</th>
+                <th>设备名称</th>
+                <th>设备状态</th>
+                <th>借出状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for device in list %}
+            <tr>
+                <th scope="row">{{ device['id'] }}</th>
+                <td>{{ device['name'] }}</td>
+                <td>{{ device['status'] }}</td>
+                <td>{{ device['lend'] }}</td>
+                <td>
+                    <div class="btn-group btn-group-xs" role="group">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#editdevice" data-id="{{ device['id'] }}" data-name="{{ device['name'] }}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deldevice" data-id="{{ device['id'] }}" data-name="{{ device['name'] }}">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-5">
+        <div class="row">
+          <div class="col-md-12">
+              <h3>添加设备</h3>
+          </div>
+        </div>
+        <form action="/admin/adddevices" method="POST">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="devicelist">
+                        <div class="form-group device" id="device_1">
+                            <label>设备No. 1</label>
+                            <input type="text" class="form-control" name="devicename1" placeholder="设备名称1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-success">保存设备信息</button>
+                </div>
+                <div class="col-md-3 col-md-offset-6">
+                    <button type="button" class="btn btn-default add_device" title="新增设备"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-default del_device" title="删减设备"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                </div>
+            </div>
+        </form>
     </div>
 </div><!--/.row-->
+<!-- 修改设备 -->
+    <div class="modal fade" id="editdevice" tabindex="-1" role="dialog" aria-labelledby="editdeviceLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="editdeviceLabel">更新设备信息</h4>
+                </div>
+                <form method="POST" action="#">
+                    <input type="hidden" id="editid" name="editid">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="editname">设备名称</label>
+                            <input type="text" class="form-control" id="editname" name="editname">
+                        </div>
+                        <div class="form-group">
+                            <label for="status">设备状态</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="0">正常</option>
+                                <option value="1">损坏</option>
+                                <option value="2">丢失</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-info" data-dismiss="modal">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- 删除设备 -->
+    <div class="modal fade" id="deldevice" tabindex="-1" role="dialog" aria-labelledby="deldeviceLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deldeviceLabel">删除设备</h4>
+                </div>
+                <form method="POST" action="#">
+                    <div class="modal-body">
+                        您将删除设备 <label id="createDelName"></label>，确认？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-danger" data-dismiss="modal">删除</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script>
+    function add_device() {
+        $(".add_device").click(function(){
+            var device_num = $(".device").length;
+            if (device_num >= 100)
+                alert("抱歉，一次性最多添加100个设备。");
+            else {
+                $(".devicelist").append(
+                        "<div class='form-group device' id='device_" + (device_num + 1) + "'>"+
+                        "<label>"+
+                        "设备 No. " + (device_num + 1) +
+                        "</label>"+
+                        "<input type='text' class='form-control' name='devicename" + (device_num + 1) +
+                        "' placeholder='设备名称" + (device_num + 1) + "'>"+
+                        "</div>"
+                );
+            }
+        });
+    }
+    function del_device() {
+        $(".del_device").click(function() {
+            var device_num = $(".device").length;
+            if(device_num > 1) {
+                $("#device_" + device_num).remove();
+            }
+            else
+                alert("每次至少添加一个设备");
+        });
+    }
+    $(document).ready(function(){
+        add_device();
+        del_device();
+    });
+    $('#deldevice').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var name = button.data('name')
+        var modal = $(this)
+        modal.find('#delId').val(id)
+        document.getElementById("createDelName").innerHTML = name;
+    });
+    $('#editdevice').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var name = button.data('name')
+        var modal = $(this)
+        modal.find('#editid').val(id)
+        modal.find('#editname').val(name)
+    });
+</script>
 {% endblock %}
