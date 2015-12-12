@@ -66,7 +66,7 @@ class DeviceInfo:
         device = Devices.query.filter_by(device_id=id).first()
 
         db.session.delete(device)
-        db.session.commiit()
+        db.session.commit()
 
 
 class Device:
