@@ -11,7 +11,79 @@
 
 <div class="row">
     <div class="col-lg-12">
-
+        <h3>借出设备登记</h3>
+        <div class="row">
+            <form>
+                <div class="col-lg-2">
+                    <h4 style="text-align: right">快速登记</h4>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="login" placeholder="用户员工号">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="deviceid" placeholder="设备编号">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <button type="submit" class="btn btn-info">登记</button>
+                </div>
+            </form>
+        </div><!--/.row-->
+        <div class="row">
+            <div class="col-lg-6">
+                <h4>用户列表</h4>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>用户编号</th>
+                        <th>用户名</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user['login'] }}</td>
+                        <td>{{ user['name'] }}</td>
+                        <td>
+                            <div class="btn-group btn-group-xs" role="group">
+                                <button class="btn btn-primary">选择</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <h4>可用设备列表</h4>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>设备编号</th>
+                        <th>设备名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td>{{ device['id'] }}</td>
+                        <td>{{ device['name'] }}</td>
+                        <td>
+                            <div class="btn-group btn-group-xs" role="group">
+                                <button class="btn btn-primary">选择</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><!--/.row-->
     </div>
 </div><!--/.row-->
 {% endblock %}
