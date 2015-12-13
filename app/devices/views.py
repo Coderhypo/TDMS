@@ -106,6 +106,8 @@ def devices():
             tmp['status'] = u'正常'
         elif device.device_status == 1:
             tmp['status'] = u'损坏'
+        elif device.device_status == 2:
+            tmp['status'] = u'丢失'
 
         if device.lend_log_id == -1:
             tmp['lend'] = u'未借出'
