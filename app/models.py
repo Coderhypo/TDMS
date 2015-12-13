@@ -71,6 +71,7 @@ class Schools(db.Model):
 
     users = db.relationship('Users', backref='schools')
     devices = db.relationship('Devices', backref='schools')
+    lendLogs = db.relationship('LendLogs', backref='schools')
 
     def __repr__(self):
         return '<Schools %r>' % self.school_name
@@ -103,8 +104,9 @@ class LendLogs(db.Model):
     device_id = db.Column(db.Integer, db.ForeignKey('devices.device_id'))
     lender_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     doer_id = db.Column(db.String(60), nullable=False)
+    school_id = db.Column(db.Integer, db.ForeignKey('schools.school_id'))
     lend_time = db.Column(db.DateTime, nullable=False)
-    return_time = db.Column(db.DateTime, nullable=False)
+    return_time = db.Column(db.DateTime, nullable=True)
 
     def __repr__(self):
         return '<LendLogs %r>' % self.log_id
