@@ -1,16 +1,38 @@
 # coding=utf-8
-from app import app
-from app.models import Devices, Users
+from app import app, db
+from app.models import Devices, Users, LendLogs
 from flask import render_template, request, redirect, url_for
 
 from .devices import DeviceInfo
+from app.logs import LendLog
 
 __author__ = 'hypo'
 
 
-@app.route('/admin/lend')
+@app.route('/admin/lend', methods=['GET'])
 def lend():
     """设备借出页面"""
+
+    if request.method == 'GET':
+
+        if request.args.get('login') and request.args.get('deviceid'):
+
+            login = request.args.get('login')
+            deviceid = request.args.get('deviceid')
+            device = Devices.query.filter_by(device_id=deviceid).first()
+
+            if len(login) > 0 and len(deviceid) > 0 and device.lend_log_id == -1:
+                user = Users.query.filter_by(user_login=login).first()
+
+                lendlog = LendLog()
+                lendlog.setDevice(deviceid)
+                lendlog.setLender(user.user_id)
+                lendlog.setDoer(1)
+                logid = lendlog.lendDevice()
+                device.lend_log_id = logid
+
+                db.session.add(device)
+                db.session.commit()
 
     ulist = []
     users = Users.query.all()
@@ -33,12 +55,45 @@ def lend():
 def reDevices():
     """归还设备页面"""
 
-    return render_template('/admin/devices/returndevice.html')
+    if request.args.get('deviceid'):
+        return redirect(url_for('upredev', deviceid=request.args.get('deviceid')))
+
+    lendlogs = LendLogs.query.filter_by(return_time=None).all()
+    users = []
+    devices = []
+
+    userlogin = request.args.get('login', 0)
+
+    if userlogin != 0:
+        chooseuser = Users.query.filter_by(user_login=userlogin).first()
+
+    for lendlog in lendlogs:
+        users.append(lendlog.lender_id)
+
+        if userlogin == 0 or userlogin == '0':
+            devices.append(lendlog.device_id)
+        elif chooseuser.user_id == lendlog.lender_id:
+            devices.append(lendlog.device_id)
+    users = set(users)
+
+    ulist = []
+    for userid in users:
+        user = Users.query.filter_by(user_id=userid).first()
+
+        tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
+        ulist.append(tmp)
+
+    dlist = []
+    for deviceid in devices:
+        device = Devices.query.filter_by(device_id=deviceid).first()
+        tmp = {'id': device.device_id, 'name': device.device_name}
+        dlist.append(tmp)
+
+    return render_template('/admin/devices/returndevice.html', users=ulist, devices=dlist)
 
 
 @app.route('/admin/devices')
 def devices():
-
     """设备管理页面"""
 
     list = []
@@ -64,7 +119,6 @@ def devices():
 
 @app.route('/admin/adddevices', methods=['GET', 'POST'])
 def addDevice():
-
     """添加设备页面"""
 
     if request.method == 'POST':
@@ -91,7 +145,6 @@ def addDevice():
 
 @app.route('/admin/updatedevice', methods=['GET', 'POST'])
 def updateDevice():
-
     """更新设备页面"""
 
     if request.method == 'POST':
@@ -107,3 +160,26 @@ def updateDevice():
             device.deleteDevice(id)
 
     return redirect(url_for('devices'))
+
+
+@app.route('/admin/upredev', methods=['GET', 'POST'])
+def upredev():
+
+    device = Devices.query.filter_by(device_id=request.args.get('deviceid')).first()
+
+    if request.method == 'POST':
+        lendlog = LendLog()
+        lendlog.setDoer(1)
+        lendlog.returnDevice(device.lend_log_id)
+
+        device.lend_log_id = -1
+        device.device_status = request.form['status']
+        db.session.add(device)
+        db.session.commit()
+
+        return redirect(url_for('reDevices'))
+
+    deviceinfo = {'id': device.device_id, 'name': device.device_name}
+    print deviceinfo
+
+    return render_template('/admin/devices/updatedevice.html', device=deviceinfo)
