@@ -10,8 +10,81 @@
 </div><!--/.row-->
 
 <div class="row">
-    <div class="col-lg-12">
-
+<div class="col-lg-12">
+        <h3>归还设备登记</h3>
+        <div class="row">
+            <form action="/admin/lend" method="GET">
+                <div class="col-lg-3">
+                    <h4 style="text-align: right">快速归还</h4>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="deviceid" placeholder="设备编号">
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <button type="submit" class="btn btn-info">归还</button>
+                </div>
+            </form>
+        </div><!--/.row-->
+        <div class="row">
+            <div class="col-lg-6">
+                <h4>用户列表</h4>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>用户编号</th>
+                        <th>用户名</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user['login'] }}</td>
+                        <td>{{ user['name'] }}</td>
+                        <td>
+                            {% if request.args.get('login', 0) == user['login'] %}
+                                <div class="btn-group btn-group-xs" role="group">
+                                    <a href="{{ url_for('reDevices') }}" class="btn btn-default">取消</a>
+                                </div>
+                            {% else %}
+                                <div class="btn-group btn-group-xs" role="group">
+                                    <a href="{{ url_for('reDevices', login=user['login']) }}" class="btn btn-primary">查看</a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-6">
+                <h4>外借设备列表</h4>
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>设备编号</th>
+                        <th>设备名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td>{{ device['id'] }}</td>
+                        <td>{{ device['name'] }}</td>
+                        <td>
+                            <div class="btn-group btn-group-xs" role="group">
+                                <a href="{{ url_for('reDevices', deviceid=device['id']) }}" class="btn btn-primary">归还</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><!--/.row-->
     </div>
 </div><!--/.row-->
 {% endblock %}

@@ -1,10 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "/admin/base.html" %}
+{% block title %}归还登记 - TDMS后台管理{% endblock %}
+{% block main %}
+<div class="row">
+    <ol class="breadcrumb">
+        <li><a href="/admin"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li>归还登记</li>
+        <li class="active">更新设备信息</li>
+    </ol>
+</div><!--/.row-->
 
-</body>
-</html>
+<div class="row">
+    <div class="col-lg-12">
+        <h3>归还设备</h3>
+    </div>
+    <div class="col-lg-12">
+        <div class="col-lg-5 col-lg-offset-3">
+            <form action="/admin/upredev?deviceid={{ device['id'] }}" method="POST">
+                <div class="form-group">
+                    <label>设备ID</label>
+                    <input type="text" class="form-control" value="{{ device['id'] }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label>设备名称</label>
+                    <input type="text" class="form-control" value="{{ device['name'] }}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">设备状态</label>
+                    <select class="form-control" name="status">
+                        <option value="0">正常</option>
+                        <option value="1">损坏</option>
+                        <option value="2">丢失</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">保存</button>
+                <a href="/admin/return" class="btn btn-default">返回</a>
+            </form>
+        </div>
+    </div>
+</div><!--/.row-->
+{% endblock %}
