@@ -1,6 +1,6 @@
 # coding=utf-8
 from app import app
-from app.models import Devices
+from app.models import Devices, Users
 from flask import render_template, request, redirect, url_for
 
 from .devices import DeviceInfo
@@ -12,7 +12,21 @@ __author__ = 'hypo'
 def lend():
     """设备借出页面"""
 
-    return render_template('/admin/devices/lenddevice.html')
+    ulist = []
+    users = Users.query.all()
+
+    for user in users:
+        tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
+        ulist.append(tmp)
+
+    dlist = []
+    devices = Devices.query.filter_by(lend_log_id=-1).all()
+
+    for device in devices:
+        tmp = {'id': device.device_id, 'name': device.device_name}
+        dlist.append(tmp)
+
+    return render_template('/admin/devices/lenddevice.html', users=ulist, devices=dlist)
 
 
 @app.route('/admin/return')
