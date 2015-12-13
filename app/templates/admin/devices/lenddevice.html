@@ -49,9 +49,15 @@
                         <td>{{ user['login'] }}</td>
                         <td>{{ user['name'] }}</td>
                         <td>
+                            {% if request.args.get('login', 0) == user['login'] %}
                             <div class="btn-group btn-group-xs" role="group">
-                                <button class="btn btn-primary">选择</button>
+                                    <a href="{{ url_for('lend') }}" class="btn btn-default">取消</a>
+                                </div>
+                            {% else %}
+                            <div class="btn-group btn-group-xs" role="group">
+                                <a href="{{ url_for('lend', login=user['login'], deviceid=request.args.get('deviceid')) }}" class="btn btn-primary">选择</a>
                             </div>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -75,7 +81,7 @@
                         <td>{{ device['name'] }}</td>
                         <td>
                             <div class="btn-group btn-group-xs" role="group">
-                                <button class="btn btn-primary">选择</button>
+                                <a href="{{ url_for('lend', login=request.args.get('login'), deviceid=device['id']) }}" class="btn btn-primary">选择</a>
                             </div>
                         </td>
                     </tr>
