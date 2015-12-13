@@ -37,16 +37,18 @@ class LendLog:
         log.device_id = self.__device_id
         log.lender_id = self.__lender_id
         log.doer_id = self.__doer_id
-        log.lend_time = datetime.datetime.now()
+        log.lend_time = datetime.utcnow()
         log.return_time = None
 
         db.session.add(log)
         db.session.commit()
 
+        return log.log_id
+
     def returnDevice(self, logid):
         log = LendLogs.query.filter_by(log_id=logid).first()
         log.doer_id = self.__doer_id
-        log.return_time = datetime.datetime.now()
+        log.return_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -95,7 +97,7 @@ class Log:
         log.user_id = self.__user_id
         log.log_type = 'LOGIN'
         log.log_content = '用户 ' + self.__user_id + ' 登录系统成功'
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -106,7 +108,7 @@ class Log:
         log.user_id = self.__user_id
         log.log_type = 'ADDUSER'
         log.log_content = '用户 ' + self.__user_id + ' 新增用户 ' + userid
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -117,7 +119,7 @@ class Log:
         log.user_id = self.__user_id
         log.log_type = 'UPDATEUSER'
         log.log_content = '用户 ' + self.__user_id + ' 更新用户 ' + userid + ' 信息'
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -128,7 +130,7 @@ class Log:
         log.user_id = self.__user_id
         log.log_type = 'DELETEUSER'
         log.log_content = '用户 ' + self.__user_id + ' 删除了用户 ' + userid
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -140,7 +142,7 @@ class Log:
         log.device_id = self.__device_id
         log.log_type = 'ADDDEVICE'
         log.log_content = '用户 ' + self.__user_id + ' 新增设备 ' + self.__device_id
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -152,7 +154,7 @@ class Log:
         log.device_id = self.__device_id
         log.log_type = 'UPDATEDEVICE'
         log.log_content = '用户 ' + self.__user_id + ' 更新了设备 ' + self.__device_id + ' 信息'
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -164,7 +166,7 @@ class Log:
         log.device_id = self.__device_id
         log.log_type = 'DELETEDEVICE'
         log.log_content = '用户 ' + self.__user_id + ' 删除了设备 ' + self.__device_id
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -176,7 +178,7 @@ class Log:
         log.device_id = self.__device_id
         log.log_type = 'LENDDEVICE'
         log.log_content = '用户 ' + lenderid + ' 借用设备 ' + self.__device_id + ' 操作人 ' + self.__user_id
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -188,7 +190,7 @@ class Log:
         log.device_id = self.__device_id
         log.log_type = 'RETURNDEVICE'
         log.log_content = '用户 ' + lenderid + ' 归还设备 ' + self.__device_id + ' 操作人 ' + self.__user_id
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
@@ -200,7 +202,7 @@ class Log:
         log.device_id = self.__device_id
         log.log_type = self.__log_type
         log.log_content = self.__log_content
-        log.log_time = datetime.datetime.now()
+        log.log_time = datetime.utcnow()
 
         db.session.add(log)
         db.session.commit()
