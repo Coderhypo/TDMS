@@ -25,7 +25,15 @@ def users():
 
         list.append(tmp)
 
-    return render_template('/admin/users/usermanage.html', list=list)
+    slist = []
+    schools = Schools.query.all()
+
+    for school in schools:
+        tmp = {'id': school.school_id, 'name': school.school_name}
+
+        slist.append(tmp)
+
+    return render_template('/admin/users/usermanage.html', list=list, schools=slist)
 
 
 @app.route('/admin/adduser', methods=['GET', 'POST'])
@@ -65,6 +73,9 @@ def updateuser():
             user.setPhone(request.form['phone'])
             user.setSchool(request.form['school'])
             user.setRule(request.form['rule'])
+
+            if request.form['pass'] is not None and len(request.form['pass']) > 0:
+                user.setPass(request.form['pass'])
 
             user.updateUser(id)
         elif 'delete' == request.form['type']:
