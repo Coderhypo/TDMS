@@ -11,7 +11,42 @@
 
 <div class="row">
     <div class="col-lg-12">
-
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>记录管理</h3>
+                <a href="{{ url_for('lendLogs') }}" class="btn btn-link">全部</a>
+                <a href="{{ url_for('lendLogs', show='unreturn') }}" class="btn btn-link">未归还</a>
+                <a href="{{ url_for('lendLogs', show='return') }}" class="btn btn-link">已归还</a>
+            </div>
+        </div><!--/.row-->
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>记录编号</th>
+                        <th>设备名称</th>
+                        <th>借出用户</th>
+                        <th>操作人</th>
+                        <th>借出时间</th>
+                        <th>归还时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for log in list %}
+                        <tr>
+                            <th scope="row">{{ log['id'] }}</th>
+                            <td>{{ log['device'] }}</td>
+                            <td>{{ log['lender'] }}</td>
+                            <td>{{ log['doer'] }}</td>
+                            <td>{{ log['lendtime'] }}</td>
+                            <td>{{ log['returntime'] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><!--/.row-->
     </div>
 </div><!--/.row-->
 {% endblock %}
