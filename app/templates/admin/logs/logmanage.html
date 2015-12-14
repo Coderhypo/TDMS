@@ -11,7 +11,39 @@
 
 <div class="row">
     <div class="col-lg-12">
-
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>系统日志</h3>
+            </div>
+        </div><!--/.row-->
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th>日志ID</th>
+                        <th>日志类型</th>
+                        <th>操作用户</th>
+                        <th>涉及设备</th>
+                        <th>日志内容</th>
+                        <th>记录时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for log in list %}
+                        <tr>
+                            <th scope="row">{{ log['id'] }}</th>
+                            <td>{{ log['type'] }}</td>
+                            <td>{{ log['doer'] }}</td>
+                            <td>{{ log['device'] }}</td>
+                            <td>{{ log['content'] }}</td>
+                            <td>{{ log['logtime'] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><!--/.row-->
     </div>
 </div><!--/.row-->
 {% endblock %}
