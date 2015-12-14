@@ -9,7 +9,7 @@ from config import config
 __author__ = 'hypo'
 
 app = Flask(__name__)
-db = SQLAlchemy()
+db = SQLAlchemy(use_native_unicode="utf8")
 
 with app.app_context():
     config_name = os.getenv('CONFIG') or 'default'
