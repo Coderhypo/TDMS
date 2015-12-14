@@ -1,6 +1,6 @@
 # coding=utf-8
 from app import app
-from app.models import LendLogs, Devices, Users
+from app.models import LendLogs, Devices, Users, Logs
 from flask import render_template, request
 
 __author__ = 'hypo'
@@ -42,4 +42,18 @@ def logs():
 
     """系统日志 管理员权限"""
 
-    return render_template('/admin/logs/logmanage.html')
+
+    logs = Logs.query.all()
+
+    list = []
+
+    for log in logs:
+        tmp = {'id': log.log_id, 'type': log.log_type, 'content': log.log_content, 'logtime': log.log_time}
+        user = Users.query.filter_by(user_id=log.user_id).first()
+        device = Devices.query.filter_by(device_id=log.device_id).first()
+        tmp['user'] = user.user_name
+        tmp['device'] = device.device_name
+
+        list.append(tmp)
+
+    return render_template('/admin/logs/logmanage.html', list=list)
