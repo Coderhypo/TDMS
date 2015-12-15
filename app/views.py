@@ -18,7 +18,7 @@ def login():
 
     """登录"""
 
-    return render_template('base.html')
+    return render_template('login.html')
 
 
 @app.route('/logout')
