@@ -16,7 +16,7 @@
 		<div class="login-panel panel panel-default">
 			<div class="panel-heading">登录</div>
 			<div class="panel-body">
-				<form role="form">
+				<form action="/login" method="POST" role="form">
 					<fieldset>
 						<div class="form-group">
 							<input class="form-control" placeholder="用户名" name="login" type="text" autofocus="">
@@ -29,7 +29,7 @@
 								<input name="remember" type="checkbox" value="Remember Me">Remember Me
 							</label>
 						</div>
-						<a href="#" class="btn btn-primary">登录</a>
+						<button type="submit" class="btn btn-primary">登录</button>
 					</fieldset>
 				</form>
 			</div>
