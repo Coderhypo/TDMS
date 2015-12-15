@@ -19,7 +19,7 @@ class UserInfo:
 
     __user_login = 'NONE'
     __user_name = 'NONE'
-    __user_pass = 'NULL'
+    __user_pass = None
     __user_phone = 'NONE'
     __school_id = -1
     __user_rule = 'USER'
@@ -66,7 +66,8 @@ class UserInfo:
 
         user.user_login = self.__user_login
         user.user_name = self.__user_name
-        user.user_pass = self.__user_pass
+        if self.__user_pass is not None:
+            user.update_pass(self.__user_pass)
         user.user_phone = self.__user_phone
         user.school_id = self.__school_id
         user.user_rule = self.__user_rule
