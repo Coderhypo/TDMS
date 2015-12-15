@@ -47,8 +47,8 @@ class Users(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     user_login = db.Column(db.String(60), nullable=False, unique=True)
     user_name = db.Column(db.String(60), nullable=False)
-    user_pass = db.Column(db.String(128), nullable=False)
-    user_phone = db.Column(db.String(60), nullable=False)
+    user_pass = db.Column(db.String(128), nullable=True)
+    user_phone = db.Column(db.String(60), nullable=True)
     school_id = db.Column(db.Integer, db.ForeignKey('schools.school_id'))
     user_rule = db.Column(db.String(60), nullable=False)
 
@@ -72,7 +72,7 @@ class Users(db.Model):
         return False
 
     def update_pass(self, password):
-        self.user_pass = hashlib.md5(password + self.user_email).hexdigest()
+        self.user_pass = hashlib.md5(password).hexdigest()
 
     def is_active(self):
         if self.user_pass is not None:
