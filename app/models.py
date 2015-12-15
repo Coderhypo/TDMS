@@ -1,4 +1,5 @@
 # coding=utf-8
+import hashlib
 from app import db
 
 __author__ = 'hypo'
@@ -60,6 +61,33 @@ class Users(db.Model):
     def to_json(self):
         return {'id': self.user_id, 'login': self.user_login, 'name': self.user_name,
                 'phone': self.user_phone, 'school_id': self.school_id, 'log_id': self.user_rule}
+
+    def get_id(self):
+        return self.user_id
+
+    def verify_password(self, password):
+        password = hashlib.md5(password).hexdigest()
+        if password == self.user_pass:
+            return True
+        return False
+
+    def update_pass(self, password):
+        self.user_pass = hashlib.md5(password + self.user_email).hexdigest()
+
+    def is_active(self):
+        if self.user_pass is not None:
+            return True
+        return False
+
+    def is_root(self):
+        if self.user_rule == 'ROOT':
+            return True
+        return False
+
+    def is_admin(self):
+        if self.user_rule == 'ADMIN':
+            return True
+        return False
 
 
 class Schools(db.Model):
