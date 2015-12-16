@@ -1,8 +1,8 @@
 # coding=utf-8
-from flask.ext.login import login_user
+from flask.ext.login import login_user, logout_user
 from app import app
 from app.models import Users
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 
 __author__ = 'hypo'
 
@@ -37,8 +37,10 @@ def login():
 def logout():
 
     """登出"""
+    logout_user()
+    flash('登出成功！')
 
-    return render_template('base.html')
+    return render_template('login.html')
 
 
 @app.route('/admin')
