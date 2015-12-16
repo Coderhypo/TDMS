@@ -1,6 +1,7 @@
 # coding=utf-8
 from app import app
 from flask import render_template, request, redirect, url_for
+from flask.ext.login import login_required, current_user
 
 from app.models import Schools, Users
 
@@ -39,6 +40,7 @@ def users():
 @app.route('/admin/adduser', methods=['GET', 'POST'])
 def addUser():
     if request.method == 'POST':
+        doer = current_user.user_login
         user = UserInfo()
         user.setLoginName(request.form['login'])
         user.setUsername(request.form['name'])
@@ -65,6 +67,7 @@ def updateuser():
     """更新用户信息 管理员权限"""
 
     if request.method == 'POST':
+        doer = current_user.user_login
         if 'update' == request.form['type']:
             id = request.form['editid']
             user = UserInfo()
