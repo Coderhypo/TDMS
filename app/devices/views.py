@@ -2,6 +2,7 @@
 from app import app, db
 from app.models import Devices, Users, LendLogs
 from flask import render_template, request, redirect, url_for
+from flask.ext.login import current_user
 
 from .devices import DeviceInfo
 from app.logs import LendLog
@@ -20,14 +21,14 @@ def lend():
             login = request.args.get('login')
             deviceid = request.args.get('deviceid')
             device = Devices.query.filter_by(device_id=deviceid).first()
-
+            doer = current_user.user_login
             if len(login) > 0 and len(deviceid) > 0 and device.lend_log_id == -1:
                 user = Users.query.filter_by(user_login=login).first()
 
                 lendlog = LendLog()
                 lendlog.setDevice(deviceid)
                 lendlog.setLender(user.user_id)
-                lendlog.setDoer(1)
+                lendlog.setDoer(doer.user_id)
                 logid = lendlog.lendDevice()
                 device.lend_log_id = logid
 
@@ -124,6 +125,7 @@ def addDevice():
     """添加设备页面"""
 
     if request.method == 'POST':
+        doer = current_user.user_login
         num = 1
         while True:
 
@@ -150,6 +152,7 @@ def updateDevice():
     """更新设备页面"""
 
     if request.method == 'POST':
+        doer = current_user.user_login
         if 'update' == request.form['type']:
             id = request.form['editid']
             device = DeviceInfo()
@@ -170,8 +173,9 @@ def upredev():
     device = Devices.query.filter_by(device_id=request.args.get('deviceid')).first()
 
     if request.method == 'POST':
+        doer = current_user.user_login
         lendlog = LendLog()
-        lendlog.setDoer(1)
+        lendlog.setDoer(doer.user_id)
         lendlog.returnDevice(device.lend_log_id)
 
         device.lend_log_id = -1
@@ -182,6 +186,5 @@ def upredev():
         return redirect(url_for('reDevices'))
 
     deviceinfo = {'id': device.device_id, 'name': device.device_name}
-    print deviceinfo
 
     return render_template('/admin/devices/updatedevice.html', device=deviceinfo)
