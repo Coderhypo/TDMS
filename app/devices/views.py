@@ -36,14 +36,14 @@ def lend():
                 db.session.commit()
 
     ulist = []
-    users = Users.query.all()
+    users = Users.query.filter_by(school_id=doer.school_id).all()
 
     for user in users:
         tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
         ulist.append(tmp)
 
     dlist = []
-    devices = Devices.query.filter_by(lend_log_id=-1).all()
+    devices = Devices.query.filter_by(lend_log_id=-1, school_id=doer.school_id).all()
 
     for device in devices:
         tmp = {'id': device.device_id, 'name': device.device_name}
@@ -59,7 +59,9 @@ def reDevices():
     if request.args.get('deviceid'):
         return redirect(url_for('upredev', deviceid=request.args.get('deviceid')))
 
-    lendlogs = LendLogs.query.filter_by(return_time=None).all()
+    doer = current_user.user_login
+
+    lendlogs = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).all()
     users = []
     devices = []
 
@@ -98,7 +100,8 @@ def devices():
     """设备管理页面"""
 
     list = []
-    devices = Devices.query.all()
+    doer = current_user.user_login
+    devices = Devices.query.filter_by(school_id=doer.school_id).all()
 
     for device in devices:
         tmp = {'id': device.device_id, 'name': device.device_name}
