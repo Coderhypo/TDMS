@@ -2,6 +2,7 @@
 from app import app
 from app.models import LendLogs, Devices, Users, Logs
 from flask import render_template, request
+from flask.ext.login import current_user
 
 __author__ = 'hypo'
 
@@ -11,19 +12,19 @@ def lendLogs():
 
     """设备借出归还日志"""
     show = request.args.get('show', 'all')
+    doer = current_user.user_login
 
     if show == 'return':
-        lends = LendLogs.query.filter(LendLogs.return_time!=None).all()
+        lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id).all()
     elif show == 'unreturn':
-        lends = LendLogs.query.filter_by(return_time=None).all()
+        lends = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).all()
     else:
-        lends = LendLogs.query.all()
+        lends = LendLogs.query.filter_by(school_id=doer.school_id).all()
     list = []
 
     for lend in lends:
         tmp = {'id': lend.log_id, 'lendtime': lend.lend_time}
         lender = Users.query.filter_by(user_id=lend.lender_id).first()
-        doer = Users.query.filter_by(user_id=lend.lender_id).first()
         device = Devices.query.filter_by(device_id=lend.device_id).first()
         tmp['lender'] = lender.user_name
         tmp['doer'] = doer.user_name
