@@ -2,7 +2,7 @@
 from app import app, db
 from app.models import Devices, Users, LendLogs
 from flask import render_template, request, redirect, url_for
-from flask.ext.login import current_user
+from flask.ext.login import current_user, login_required
 
 from .devices import DeviceInfo
 from app.logs import LendLog
@@ -11,6 +11,7 @@ __author__ = 'hypo'
 
 
 @app.route('/admin/lend', methods=['GET'])
+@login_required
 def lend():
     """设备借出页面"""
 
@@ -53,6 +54,7 @@ def lend():
 
 
 @app.route('/admin/return')
+@login_required
 def reDevices():
     """归还设备页面"""
 
@@ -96,6 +98,7 @@ def reDevices():
 
 
 @app.route('/admin/devices')
+@login_required
 def devices():
     """设备管理页面"""
 
@@ -124,6 +127,7 @@ def devices():
 
 
 @app.route('/admin/adddevices', methods=['GET', 'POST'])
+@login_required
 def addDevice():
     """添加设备页面"""
 
@@ -151,6 +155,7 @@ def addDevice():
 
 
 @app.route('/admin/updatedevice', methods=['GET', 'POST'])
+@login_required
 def updateDevice():
     """更新设备页面"""
 
@@ -171,6 +176,7 @@ def updateDevice():
 
 
 @app.route('/admin/upredev', methods=['GET', 'POST'])
+@login_required
 def upredev():
 
     device = Devices.query.filter_by(device_id=request.args.get('deviceid')).first()
