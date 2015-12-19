@@ -14,7 +14,7 @@ __author__ = 'hypo'
 @login_required
 def lend():
     """设备借出页面"""
-
+    doer = current_user
     if request.method == 'GET':
 
         if request.args.get('login') and request.args.get('deviceid'):
@@ -61,7 +61,7 @@ def reDevices():
     if request.args.get('deviceid'):
         return redirect(url_for('upredev', deviceid=request.args.get('deviceid')))
 
-    doer = current_user.user_login
+    doer = current_user
 
     lendlogs = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).all()
     users = []
@@ -103,7 +103,7 @@ def devices():
     """设备管理页面"""
 
     list = []
-    doer = current_user.user_login
+    doer = current_user
     devices = Devices.query.filter_by(school_id=doer.school_id).all()
 
     for device in devices:
@@ -132,7 +132,7 @@ def addDevice():
     """添加设备页面"""
 
     if request.method == 'POST':
-        doer = current_user.user_login
+        doer = current_user
         num = 1
         while True:
 
@@ -160,7 +160,7 @@ def updateDevice():
     """更新设备页面"""
 
     if request.method == 'POST':
-        doer = current_user.user_login
+        doer = current_user
         if 'update' == request.form['type']:
             id = request.form['editid']
             device = DeviceInfo()
@@ -182,7 +182,7 @@ def upredev():
     device = Devices.query.filter_by(device_id=request.args.get('deviceid')).first()
 
     if request.method == 'POST':
-        doer = current_user.user_login
+        doer = current_user
         lendlog = LendLog()
         lendlog.setDoer(doer.user_id)
         lendlog.returnDevice(device.lend_log_id)
