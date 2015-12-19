@@ -38,6 +38,8 @@ def lend():
 
     ulist = []
     users = Users.query.filter_by(school_id=doer.school_id).all()
+    if doer.school_id == 1:
+        users = Users.query.all()
 
     for user in users:
         tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
@@ -45,6 +47,8 @@ def lend():
 
     dlist = []
     devices = Devices.query.filter_by(lend_log_id=-1, school_id=doer.school_id).all()
+    if doer.school_id == 1:
+        devices = Devices.query.all()
 
     for device in devices:
         tmp = {'id': device.device_id, 'name': device.device_name}
@@ -64,6 +68,8 @@ def reDevices():
     doer = current_user
 
     lendlogs = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).all()
+    if doer.school_id == 1:
+        lendlogs = LendLogs.query.filter_by(return_time=None).all()
     users = []
     devices = []
 
@@ -105,6 +111,9 @@ def devices():
     list = []
     doer = current_user
     devices = Devices.query.filter_by(school_id=doer.school_id).all()
+
+    if doer.school_id == 1:
+        devices = Devices.query.all()
 
     for device in devices:
         tmp = {'id': device.device_id, 'name': device.device_name}
