@@ -26,7 +26,7 @@
         <div class="col-lg-5 col-lg-offset-4">
             <form action="/admin/adduser" method="POST">
                 <div class="form-group">
-                    <label>用户编号</label>
+                    <label>用户员工号</label>
                     <input type="test" class="form-control" name="login" placeholder="编号">
                 </div>
                 <div class="form-group">
@@ -36,14 +36,6 @@
                 <div class="form-group">
                     <label>手机号</label>
                     <input type="test" class="form-control" name="phone" placeholder="手机号">
-                </div>
-                <div class="form-group">
-                    <label>学院</label>
-                    <select class="form-control" name="school">
-                        {% for school in schools %}
-                        <option value="{{ school['id'] }}">{{ school['name'] }}</option>
-                        {% endfor %}
-                    </select>
                 </div>
                 <button type="submit" class="btn btn-warning">添加用户</button>
                 <a href="/admin/users" class="btn btn-default">返回</a>
