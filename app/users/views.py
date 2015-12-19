@@ -16,7 +16,8 @@ def users():
     """用户管理界面"""
 
     list = []
-    users = Users.query.all()
+    doer = current_user
+    users = Users.query.filter_by(school_id=doer.school_id).all()
 
     for user in users:
         tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
@@ -27,15 +28,7 @@ def users():
 
         list.append(tmp)
 
-    slist = []
-    schools = Schools.query.all()
-
-    for school in schools:
-        tmp = {'id': school.school_id, 'name': school.school_name}
-
-        slist.append(tmp)
-
-    return render_template('/admin/users/usermanage.html', list=list, schools=slist)
+    return render_template('/admin/users/usermanage.html', list=list)
 
 
 @app.route('/admin/adduser', methods=['GET', 'POST'])
@@ -47,7 +40,7 @@ def addUser():
         user.setLoginName(request.form['login'])
         user.setUsername(request.form['name'])
         user.setPhone(request.form['phone'])
-        user.setSchool(request.form['school'])
+        user.setSchool(doer.school_id)
 
         user.getNewUser()
 
