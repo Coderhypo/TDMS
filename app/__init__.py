@@ -25,7 +25,7 @@ with app.app_context():
 
     @login_manager.user_loader
     def load_user(userid):
-        return Users.query.filter_by(user_id=userid).first()
+        return Users.query.filter_by(user_id=int(userid)).first()
 
 
 from .views import *
@@ -33,3 +33,4 @@ from .devices import *
 from .users import *
 from .logs import *
 from .api import *
+from models import Users
