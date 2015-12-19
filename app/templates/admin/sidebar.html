@@ -13,6 +13,7 @@
         <li><a href="/admin/devices"><span class="glyphicon glyphicon-compressed"></span> 设备管理</a></li>
         <li><a href="/admin/users"><span class="glyphicon glyphicon-user"></span> 用户管理</a></li>
         <li><a href="/admin/lendlogs"><span class="glyphicon glyphicon-list-alt"></span> 记录管理</a></li>
+        {% if current_user.school_id == 1 %}
         <li class="parent ">
             <a href="#sub-item" data-toggle="collapse">
                 <span class="glyphicon glyphicon-wrench" href="#sub-item" data-toggle="collapse"></span> 系统设置 <span data-toggle="collapse" href="#sub-item" class="icon pull-right"><em class="glyphicon glyphicon-s glyphicon-plus"></em></span>
@@ -30,5 +31,6 @@
                 </li>
             </ul>
         </li>
+        {% endif %}
     </ul>
 </div><!--/.sidebar-->
