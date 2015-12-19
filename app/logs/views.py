@@ -42,7 +42,9 @@ def lendLogs():
 def logs():
 
     """系统日志 管理员权限"""
-
+    doer = current_user
+    if doer.school_id != 1:
+        return u'没有访问权限'
 
     logs = Logs.query.all()
 
