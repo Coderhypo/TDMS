@@ -22,7 +22,6 @@ def lend():
             login = request.args.get('login')
             deviceid = request.args.get('deviceid')
             device = Devices.query.filter_by(device_id=deviceid).first()
-            doer = current_user.user_login
             if len(login) > 0 and len(deviceid) > 0 and device.lend_log_id == -1:
                 user = Users.query.filter_by(user_login=login).first()
 
@@ -30,6 +29,7 @@ def lend():
                 lendlog.setDevice(deviceid)
                 lendlog.setLender(user.user_id)
                 lendlog.setDoer(doer.user_id)
+                lendlog.setSchool(doer.school_id)
                 logid = lendlog.lendDevice()
                 device.lend_log_id = logid
 
@@ -147,6 +147,7 @@ def addDevice():
 
             device = DeviceInfo()
             device.setName(devicename)
+            device.setSchool(doer.school_id)
             device.getNewDevice()
 
             num += 1
@@ -165,6 +166,7 @@ def updateDevice():
             id = request.form['editid']
             device = DeviceInfo()
             device.setName(request.form['editname'])
+            device.setSchool(doer.school_id)
             device.setStatus(request.form['status'])
             device.updateDevice(id)
         elif 'delete' == request.form['type']:
