@@ -12,7 +12,7 @@ def lendLogs():
 
     """设备借出归还日志"""
     show = request.args.get('show', 'all')
-    doer = current_user.user_login
+    doer = current_user
 
     if show == 'return':
         lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id).all()
