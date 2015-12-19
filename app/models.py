@@ -1,5 +1,6 @@
 # coding=utf-8
 import hashlib
+from flask.ext.login import UserMixin
 from app import db
 
 __author__ = 'hypo'
@@ -40,7 +41,7 @@ class DeviceTypes(db.Model):
         return '<DeviceTypes %r>' % self.device_type_id
 
 
-class Users(db.Model):
+class Users(UserMixin, db.Model):
     """用户表"""
 
     __tablename__ = 'users'
@@ -75,9 +76,9 @@ class Users(db.Model):
         self.user_pass = hashlib.md5(password).hexdigest()
 
     def is_active(self):
-        if self.user_pass is not None:
-            return True
-        return False
+        if self.user_rule == 'USER':
+            return False
+        return True
 
     def is_root(self):
         if self.user_rule == 'ROOT':
