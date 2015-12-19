@@ -19,6 +19,7 @@ class LendLog:
     __lender_id = None
     __doer_id = None
     __lend_time = None
+    __school_id = None
 
     def __init__(self):
         pass
@@ -32,11 +33,15 @@ class LendLog:
     def setDoer(self, id):
         self.__doer_id = id
 
+    def setSchool(self, id):
+        self.__school_id = id
+
     def lendDevice(self):
         log = LendLogs()
         log.device_id = self.__device_id
         log.lender_id = self.__lender_id
         log.doer_id = self.__doer_id
+        log.school_id = self.__school_id
         log.lend_time = datetime.utcnow()
         log.return_time = None
 
