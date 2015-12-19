@@ -42,7 +42,7 @@ def users():
 @login_required
 def addUser():
     if request.method == 'POST':
-        doer = current_user.user_login
+        doer = current_user
         user = UserInfo()
         user.setLoginName(request.form['login'])
         user.setUsername(request.form['name'])
@@ -70,7 +70,7 @@ def updateuser():
     """更新用户信息 管理员权限"""
 
     if request.method == 'POST':
-        doer = current_user.user_login
+        doer = current_user
         if 'update' == request.form['type']:
             id = request.form['editid']
             user = UserInfo()
