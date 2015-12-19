@@ -11,6 +11,7 @@ __author__ = 'hypo'
 
 
 @app.route('/admin/users')
+@login_required
 def users():
     """用户管理界面"""
 
@@ -38,6 +39,7 @@ def users():
 
 
 @app.route('/admin/adduser', methods=['GET', 'POST'])
+@login_required
 def addUser():
     if request.method == 'POST':
         doer = current_user.user_login
@@ -63,6 +65,7 @@ def addUser():
 
 
 @app.route('/admin/updateuser', methods=['GET', 'POST'])
+@login_required
 def updateuser():
     """更新用户信息 管理员权限"""
 
@@ -91,6 +94,7 @@ def updateuser():
 
 
 @app.route('/admin/schools')
+@login_required
 def schools():
     """学院管理 管理员权限"""
 
@@ -108,6 +112,7 @@ def schools():
 
 
 @app.route('/admin/addschool', methods=['GET', 'POST'])
+@login_required
 def addSchool():
     """添加学院 管理员权限"""
 
@@ -120,6 +125,7 @@ def addSchool():
 
 
 @app.route('/admin/updateschool', methods=['GET', 'POST'])
+@login_required
 def updateschool():
     """更新学院信息 管理员权限"""
 
