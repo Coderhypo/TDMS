@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask.ext.login import login_user, logout_user
+from flask.ext.login import login_user, logout_user, current_user
 from app import app
 from app.models import Users
 from flask import render_template, request, redirect, url_for, flash
@@ -25,7 +25,6 @@ def login():
 
         user = Users.query.filter_by(user_login=userlogin).first()
         if user is not None and user.verify_password(password):
-            print 'HELLO'
             remember = True if 'remember' in request.form else False
             login_user(user, remember)
             return redirect(url_for('admin'))
