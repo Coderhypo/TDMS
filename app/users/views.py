@@ -17,7 +17,10 @@ def users():
 
     list = []
     doer = current_user
-    users = Users.query.filter_by(school_id=doer.school_id).all()
+    if doer.school_id != 1:
+        users = Users.query.filter_by(school_id=doer.school_id).all()
+    else:
+        users = Users.query.all()
 
     for user in users:
         tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
@@ -28,7 +31,15 @@ def users():
 
         list.append(tmp)
 
-    return render_template('/admin/users/usermanage.html', list=list)
+    slist = []
+    schools = Schools.query.all()
+
+    for school in schools:
+        tmp = {'id': school.school_id, 'name': school.school_name}
+
+        slist.append(tmp)
+
+    return render_template('/admin/users/usermanage.html', list=list, schools=slist)
 
 
 @app.route('/admin/adduser', methods=['GET', 'POST'])
@@ -46,15 +57,7 @@ def addUser():
 
         return redirect(url_for('users'))
 
-    list = []
-    schools = Schools.query.all()
-
-    for school in schools:
-        tmp = {'id': school.school_id, 'name': school.school_name}
-
-        list.append(tmp)
-
-    return render_template('/admin/users/adduser.html', schools=list)
+    return render_template('/admin/users/adduser.html')
 
 
 @app.route('/admin/updateuser', methods=['GET', 'POST'])
@@ -70,11 +73,15 @@ def updateuser():
             user.setLoginName(request.form['login'])
             user.setUsername(request.form['name'])
             user.setPhone(request.form['phone'])
-            user.setSchool(request.form['school'])
-            user.setRule(request.form['rule'])
+            if doer.school_id == 1:
+                user.setSchool(request.form['school'])
+                user.setRule(request.form['rule'])
 
-            if request.form['pass'] is not None and len(request.form['pass']) > 0:
-                user.setPass(request.form['pass'])
+                if request.form['pass'] is not None and len(request.form['pass']) > 0:
+                    user.setPass(request.form['pass'])
+                    user.setRule('ADMIN')
+            else:
+                user.setSchool(doer.school_id)
 
             user.updateUser(id)
         elif 'delete' == request.form['type']:
@@ -90,6 +97,10 @@ def updateuser():
 @login_required
 def schools():
     """学院管理 管理员权限"""
+
+    doer = current_user
+    if doer.school_id != 1:
+        return u'没有访问权限'
 
     list = []
     schools = Schools.query.all()
