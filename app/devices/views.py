@@ -5,7 +5,7 @@ from flask import render_template, request, redirect, url_for
 from flask.ext.login import current_user, login_required
 
 from .devices import DeviceInfo
-from app.logs import LendLog
+from app.logs import LendLog, Log
 
 __author__ = 'hypo'
 
@@ -32,6 +32,13 @@ def lend():
                 lendlog.setSchool(doer.school_id)
                 logid = lendlog.lendDevice()
                 device.lend_log_id = logid
+
+                log = Log()
+                log.setUser(doer.user_id)
+                log.setDevice(deviceid)
+                log.setType('LEND')
+                log.setContent('LEND DEVICE ' + deviceid)
+                log.info()
 
                 db.session.add(device)
                 db.session.commit()
@@ -157,7 +164,15 @@ def addDevice():
             device = DeviceInfo()
             device.setName(devicename)
             device.setSchool(doer.school_id)
-            device.getNewDevice()
+
+            newdevice = device.getNewDevice()
+
+            log = Log()
+            log.setUser(doer.user_id)
+            log.setDevice(newdevice.device_id)
+            log.setType('ADD')
+            log.setContent('ADD NEW DEVICE ' + str(newdevice.device_id))
+            log.info()
 
             num += 1
 
@@ -178,10 +193,21 @@ def updateDevice():
             device.setSchool(doer.school_id)
             device.setStatus(request.form['status'])
             device.updateDevice(id)
+            log = Log()
+            log.setUser(doer.user_id)
+            log.setDevice(id)
+            log.setType('UPDATE')
+            log.setContent('UPDATE DEVICE ' + id)
+            log.info()
         elif 'delete' == request.form['type']:
             id = request.form['delid']
             device = DeviceInfo()
             device.deleteDevice(id)
+            log = Log()
+            log.setUser(doer.user_id)
+            log.setType('DELETE')
+            log.setContent('DELETE DEVICE ' + id)
+            log.info()
 
     return redirect(url_for('devices'))
 
@@ -200,6 +226,14 @@ def upredev():
 
         device.lend_log_id = -1
         device.device_status = request.form['status']
+
+        log = Log()
+        log.setUser(doer.user_id)
+        log.setType('RETURN')
+        log.setDevice(device.device_id)
+        log.setContent('RETURN DEVICE ' + str(device.device_id))
+        log.info()
+
         db.session.add(device)
         db.session.commit()
 
