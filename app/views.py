@@ -1,5 +1,5 @@
 # coding=utf-8
-from flask.ext.login import login_user, logout_user, current_user
+from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app
 from app.models import Users
 from flask import render_template, request, redirect, url_for, flash
@@ -43,6 +43,7 @@ def logout():
 
 
 @app.route('/admin')
+@login_required
 def admin():
 
     """后台主页"""
