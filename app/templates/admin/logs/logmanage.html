@@ -23,8 +23,8 @@
                     <tr>
                         <th>日志ID</th>
                         <th>日志类型</th>
-                        <th>操作用户</th>
-                        <th>涉及设备</th>
+                        <th>操作用户ID</th>
+                        <th>涉及设备ID</th>
                         <th>日志内容</th>
                         <th>记录时间</th>
                     </tr>
@@ -34,7 +34,7 @@
                         <tr>
                             <th scope="row">{{ log['id'] }}</th>
                             <td>{{ log['type'] }}</td>
-                            <td>{{ log['doer'] }}</td>
+                            <td>{{ log['user'] }}</td>
                             <td>{{ log['device'] }}</td>
                             <td>{{ log['content'] }}</td>
                             <td>{{ log['logtime'] }}</td>
