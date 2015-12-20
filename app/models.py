@@ -17,7 +17,6 @@ class Devices(db.Model):
     school_id = db.Column(db.Integer, db.ForeignKey('schools.school_id'))
     lend_log_id = db.Column(db.Integer, nullable=True)
 
-    logs = db.relationship('Logs', backref='devices')
     lend_logs = db.relationship('LendLogs', backref='devices')
 
     def __repr__(self):
@@ -53,7 +52,6 @@ class Users(UserMixin, db.Model):
     school_id = db.Column(db.Integer, db.ForeignKey('schools.school_id'))
     user_rule = db.Column(db.String(60), nullable=False)
 
-    logs = db.relationship('Logs', backref='users')
     lend_logs = db.relationship('LendLogs', backref='users')
 
     def __repr__(self):
@@ -111,10 +109,10 @@ class Logs(db.Model):
 
     __tablename__ = 'logs'
     log_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    device_id = db.Column(db.Integer, db.ForeignKey('devices.device_id'))
+    user_id = db.Column(db.Integer, nullable=False)
+    device_id = db.Column(db.Integer, nullable=True)
     log_type = db.Column(db.String(60), nullable=False)
-    log_content = db.Column(db.Integer, nullable=False)
+    log_content = db.Column(db.String(120), nullable=False)
     log_time = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
