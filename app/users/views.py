@@ -4,6 +4,7 @@ from flask import render_template, request, redirect, url_for
 from flask.ext.login import login_required, current_user
 
 from app.models import Schools, Users
+from app.logs import Log
 
 from .users import SchoolInfo, UserInfo
 
@@ -53,7 +54,12 @@ def addUser():
         user.setPhone(request.form['phone'])
         user.setSchool(doer.school_id)
 
-        user.getNewUser()
+        newuser = user.getNewUser()
+        log = Log()
+        log.setUser(doer.user_id)
+        log.setType('ADD')
+        log.setContent('ADD NEW USER ' + str(newuser.user_id))
+        log.info()
 
         return redirect(url_for('users'))
 
@@ -84,11 +90,23 @@ def updateuser():
                 user.setSchool(doer.school_id)
 
             user.updateUser(id)
+
+            log = Log()
+            log.setUser(doer.user_id)
+            log.setType('UPDATE')
+            log.setContent('UPDATE USER INFO ' + str(id))
+            log.info()
         elif 'delete' == request.form['type']:
             id = request.form['delid']
             user = UserInfo()
 
             user.deleteUser(id)
+
+            log = Log()
+            log.setUser(doer.user_id)
+            log.setType('DELETE')
+            log.setContent('DELETE USER ' + str(id))
+            log.info()
 
     return redirect(url_for('users'))
 
