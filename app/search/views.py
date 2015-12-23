@@ -11,4 +11,17 @@ __author__ = 'hypo'
 @app.route('/admin/search')
 @login_required
 def search():
+    if request.method == 'POST':
+        info = request.args.get('info', '')
+
+
+def search_user(info):
+    pass
+
+
+def search_device(info):
+    pass
+
+
+def search_log(info):
     pass
