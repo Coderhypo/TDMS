@@ -12,7 +12,7 @@ __author__ = 'hypo'
 @login_required
 def search():
     if request.method == 'POST':
-        info = request.args.get('info', '')
+        info = request.form['info']
 
         ulist = search_user(info)
         dlist = search_device(info)
@@ -25,10 +25,10 @@ def search():
 def search_user(info):
     list = []
     doer = current_user
-
-    users = Users.query.filter_by(school_id=doer.school_id).filter(Users.user_name.ilike('%' + info + '%')).all()
-    users += Users.query.filter_by(school_id=doer.school_id).filter(Users.user_login.ilike('%' + info + '%')).all()
-
+    str = '%' + info + '%'
+    users = Users.query.filter_by(school_id=doer.school_id)\
+        .filter(Users.user_name.ilike(str) | Users.user_login.ilike(str)).all()
+    print str
     for user in users:
         tmp = {'id': user.user_id, 'login': user.user_login, 'name': user.user_name, 'phone': user.user_phone}
         list.append(tmp)
@@ -40,8 +40,8 @@ def search_device(info):
     list = []
     doer = current_user
 
-    devices = Devices.query.filter_by(school_id=doer.school_id).filter(Devices.device_id.ilike('%' + info + '%')).all()
-    devices += Devices.query.filter_by(school_id=doer.school_id).filter(Devices.device_name.ilike('%' + info + '%')).all()
+    devices = Devices.query.filter_by(school_id=doer.school_id)\
+        .filter(Devices.device_id.ilike('%' + info + '%') | Devices.device_name.ilike('%' + info + '%')).all()
 
     for device in devices:
         tmp = {'id': device.device_id, 'name': device.device_name}
