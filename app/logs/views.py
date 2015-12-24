@@ -1,4 +1,5 @@
 # coding=utf-8
+from sqlalchemy import desc
 from app import app
 from app.models import LendLogs, Devices, Users, Logs
 from flask import render_template, request
@@ -18,11 +19,11 @@ def lendLogs():
     did = request.args.get('did', -1)
 
     if show == 'return':
-        lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id)
+        lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
     elif show == 'unreturn':
-        lends = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id)
+        lends = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
     else:
-        lends = LendLogs.query.filter_by(school_id=doer.school_id)
+        lends = LendLogs.query.filter_by(school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
 
     if uid != -1:
         lends = lends.filter_by(lender_id=uid)
