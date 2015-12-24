@@ -1,11 +1,11 @@
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-    <form role="search">
+    <div role="search">
         <div class="form-group">
-            <form>
+            <form action="/admin/search" method="POST">
                 <input type="text" class="form-control" placeholder="Search 用户/设备/记录">
             </form>
         </div>
-    </form>
+    </div>
     <ul class="nav menu">
         <li><a href="/admin"><span class="glyphicon glyphicon-dashboard"></span> 首页</a></li>
         <li><a href="/admin/lend"><span class="glyphicon glyphicon-log-out"></span> 借出登记</a></li>
