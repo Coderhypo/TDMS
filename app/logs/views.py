@@ -59,7 +59,7 @@ def logs():
     if doer.school_id != 1:
         return u'没有访问权限'
 
-    logs = Logs.query.all()
+    logs = Logs.query.order_by(desc(Logs.log_time)).all()
 
     list = []
 
