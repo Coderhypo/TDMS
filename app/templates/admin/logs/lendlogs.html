@@ -14,9 +14,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <h3>记录管理</h3>
-                <a href="{{ url_for('lendLogs') }}" class="btn btn-link">全部</a>
-                <a href="{{ url_for('lendLogs', show='unreturn') }}" class="btn btn-link">未归还</a>
-                <a href="{{ url_for('lendLogs', show='return') }}" class="btn btn-link">已归还</a>
+                <a href="{{ url_for('lendLogs', did=request.args.get('did'), uid=request.args.get('uid')) }}" class="btn btn-link">全部</a>
+                <a href="{{ url_for('lendLogs', did=request.args.get('did'), uid=request.args.get('uid'), show='unreturn') }}" class="btn btn-link">未归还</a>
+                <a href="{{ url_for('lendLogs', did=request.args.get('did'), uid=request.args.get('uid'), show='return') }}" class="btn btn-link">已归还</a>
             </div>
         </div><!--/.row-->
         <div class="row">

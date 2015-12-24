@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-lg-12">
         <h3>搜索结果</h3>
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <h4>相关用户</h4>
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
@@ -20,6 +20,7 @@
                     <th>用户员工号</th>
                     <th>用户名</th>
                     <th>手机号</th>
+                    <th>查看记录</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -29,12 +30,19 @@
                     <td>{{ user['login'] }}</td>
                     <td>{{ user['name'] }}</td>
                     <td>{{ user['phone'] }}</td>
+                    <td>
+                        <div class="btn-group btn-group-xs" role="group">
+                            <a href="/admin/lendlogs?uid={{ user['id'] }}" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;
+                            </a>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-6">
             <h4>相关设备</h4>
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
@@ -43,6 +51,7 @@
                     <th>设备名称</th>
                     <th>设备状态</th>
                     <th>借出状态</th>
+                    <th>查看记录</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -50,8 +59,15 @@
                 <tr>
                     <th scope="row">{{ device['id'] }}</th>
                     <td>{{ device['name'] }}</td>
-                    <td>{{ device['statue'] }}</td>
+                    <td>{{ device['status'] }}</td>
                     <td>{{ device['lend'] }}</td>
+                    <td>
+                        <div class="btn-group btn-group-xs" role="group">
+                            <a href="/admin/lendlogs?did={{ device['id'] }}" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;
+                            </a>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
