@@ -14,12 +14,24 @@ def lendLogs():
     show = request.args.get('show', 'all')
     doer = current_user
 
+    uid = request.args.get('uid', -1)
+    did = request.args.get('did', -1)
+
     if show == 'return':
-        lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id).all()
+        lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id)
     elif show == 'unreturn':
-        lends = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).all()
+        lends = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id)
     else:
-        lends = LendLogs.query.filter_by(school_id=doer.school_id).all()
+        lends = LendLogs.query.filter_by(school_id=doer.school_id)
+
+    if uid != -1:
+        lends = lends.filter_by(lender_id=uid)
+
+    if did != -1:
+        lends = lends.filter_by(device_id=did)
+
+    lends = lends.all()
+
     list = []
 
     for lend in lends:
