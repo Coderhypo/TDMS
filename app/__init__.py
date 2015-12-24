@@ -33,4 +33,5 @@ from .devices import *
 from .users import *
 from .logs import *
 from .api import *
+from .search import *
 from models import Users
