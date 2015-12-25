@@ -53,9 +53,9 @@ def lend():
         ulist.append(tmp)
 
     dlist = []
-    devices = Devices.query.filter_by(lend_log_id=-1, school_id=doer.school_id).all()
+    devices = Devices.query.filter_by(lend_log_id=-1, school_id=doer.school_id, device_status=0).all()
     if doer.school_id == 1:
-        devices = Devices.query.filter_by(lend_log_id=-1).all()
+        devices = Devices.query.filter_by(lend_log_id=-1, device_status=0).all()
 
     for device in devices:
         tmp = {'id': device.device_id, 'name': device.device_name}
