@@ -19,11 +19,20 @@ def lendLogs():
     did = request.args.get('did', -1)
 
     if show == 'return':
-        lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
+        if doer.school_id == 1:
+            lends = LendLogs.query.filter(LendLogs.return_time!=None).order_by(desc(LendLogs.lend_time))
+        else:
+            lends = LendLogs.query.filter(LendLogs.return_time!=None).filter_by(school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
     elif show == 'unreturn':
-        lends = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
+        if doer.school_id == 1:
+            lends = LendLogs.query.filter_by(return_time=None).order_by(desc(LendLogs.lend_time))
+        else:
+            lends = LendLogs.query.filter_by(return_time=None, school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
     else:
-        lends = LendLogs.query.filter_by(school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
+        if doer.school_id == 1:
+            lends = LendLogs.query.order_by(desc(LendLogs.lend_time))
+        else:
+            lends = LendLogs.query.filter_by(school_id=doer.school_id).order_by(desc(LendLogs.lend_time))
 
     if uid != -1:
         lends = lends.filter_by(lender_id=uid)
@@ -38,9 +47,10 @@ def lendLogs():
     for lend in lends:
         tmp = {'id': lend.log_id, 'lendtime': lend.lend_time}
         lender = Users.query.filter_by(user_id=lend.lender_id).first()
+        dolender = Users.query.filter_by(user_id=lend.doer_id).first()
         device = Devices.query.filter_by(device_id=lend.device_id).first()
         tmp['lender'] = lender.user_name
-        tmp['doer'] = doer.user_name
+        tmp['doer'] = dolender.user_name
         tmp['device'] = device.device_name
         if lend.return_time is None:
             tmp['returntime'] = u'未归还'
