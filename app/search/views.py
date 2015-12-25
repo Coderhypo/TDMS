@@ -47,10 +47,10 @@ def search_device(info):
 
     if doer.school_id == 1:
         devices = Devices.query\
-            .filter((Devices.device_id == long(info)) | Devices.device_name.ilike('%' + info + '%')).all()
+            .filter(Devices.device_id.ilike(info) | Devices.device_name.ilike('%' + info + '%')).all()
     else:
         devices = Devices.query.filter_by(school_id=doer.school_id)  \
-            .filter((Devices.device_id == long(info)) | Devices.device_name.ilike('%' + info + '%')).all()
+            .filter(Devices.device_id.ilike(info) | Devices.device_name.ilike('%' + info + '%')).all()
 
     for device in devices:
         tmp = {'id': device.device_id, 'name': device.device_name}
