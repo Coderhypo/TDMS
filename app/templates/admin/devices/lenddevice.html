@@ -80,7 +80,7 @@
                         <td>{{ device['id'] }}</td>
                         <td>{{ device['name'] }}</td>
                         <td>
-                            {% if request.args.get('deviceid', 0) == device['name'] %}
+                            {% if request.args.get('deviceid', 0) == device['id'] %}
                             <div class="btn-group btn-group-xs" role="group">
                                 <a href="{{ url_for('lend', login=request.args.get('login')) }}" class="btn btn-default">取消</a>
                             </div>
