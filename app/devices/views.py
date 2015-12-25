@@ -22,26 +22,30 @@ def lend():
             login = request.args.get('login')
             deviceid = request.args.get('deviceid')
             device = Devices.query.filter_by(device_id=deviceid).first()
-            if len(login) > 0 and len(deviceid) > 0 and device.lend_log_id == -1:
+
+            if device is None:
+                pass
+            elif len(login) > 0 and len(deviceid) > 0 and device.lend_log_id == -1:
                 user = Users.query.filter_by(user_login=login).first()
 
-                lendlog = LendLog()
-                lendlog.setDevice(deviceid)
-                lendlog.setLender(user.user_id)
-                lendlog.setDoer(doer.user_id)
-                lendlog.setSchool(doer.school_id)
-                logid = lendlog.lendDevice()
-                device.lend_log_id = logid
+                if user is not None:
+                    lendlog = LendLog()
+                    lendlog.setDevice(deviceid)
+                    lendlog.setLender(user.user_id)
+                    lendlog.setDoer(doer.user_id)
+                    lendlog.setSchool(doer.school_id)
+                    logid = lendlog.lendDevice()
+                    device.lend_log_id = logid
 
-                log = Log()
-                log.setUser(doer.user_id)
-                log.setDevice(deviceid)
-                log.setType('LEND')
-                log.setContent('LEND DEVICE ' + deviceid)
-                log.info()
+                    log = Log()
+                    log.setUser(doer.user_id)
+                    log.setDevice(deviceid)
+                    log.setType('LEND')
+                    log.setContent('LEND DEVICE ' + deviceid)
+                    log.info()
 
-                db.session.add(device)
-                db.session.commit()
+                    db.session.add(device)
+                    db.session.commit()
 
     ulist = []
     users = Users.query.filter_by(school_id=doer.school_id).all()
